@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
   res.json("Hello Node!");
 });
 
+const channelingCenterAPI = require("./src/api/ChannelingCenters.api");
+app.use("/channelingcenter", channelingCenterAPI());
+
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
 });

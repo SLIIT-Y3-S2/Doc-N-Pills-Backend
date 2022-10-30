@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
   res.json("Hello Node!");
 });
 
+const medicineApi = require("./src/api/medicine.api");
+app.use("/medicine", medicineApi());
+
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
 });

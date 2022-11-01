@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
   res.json("Hello Node!");
 });
 
+const JourneyApi = require("./src/api/Journey.api");
+app.use("/journey", JourneyApi());
+
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
 });

@@ -18,6 +18,8 @@ app.get("/", (req, res) => {
 
 const channelingCenterAPI = require("./src/api/ChannelingCenters.api");
 app.use("/channelingcenter", channelingCenterAPI());
+const medicineApi = require("./src/api/medicine.api");
+app.use("/medicine", medicineApi());
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);

@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const connectDB = require("./src/config/config");
 const app = express();
+app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
@@ -16,8 +17,7 @@ app.get("/", (req, res) => {
   res.json("Hello Node!");
 });
 
-const JourneyApi = require("./src/api/Journey.api");
-app.use("/journey", JourneyApi());
+app.use("/users", require("./src/controller/Users.controller"));
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);

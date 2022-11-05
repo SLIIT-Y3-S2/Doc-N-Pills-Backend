@@ -17,6 +17,8 @@ app.get("/", (req, res) => {
   res.json("Hello Node!");
 });
 
+const doctorAPI = require("./src/api/Doctor.api");
+app.use("/doctor", doctorAPI());
 app.use("/users", require("./src/controller/Users.controller"));
 const medicineApi = require("./src/api/medicine.api");
 app.use("/medicine", medicineApi());

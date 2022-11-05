@@ -1,11 +1,11 @@
-const ChannelingCenter = require("../model/ChannelingCenters.model");
+const Doctor = require("../model/Doctor.model");
 const express = require("express");
 const mongoose = require("mongoose");
 
-//Add New ChannelingCenter
-const addChannelingCenter = async (req, res) => {
+//Add New Doctor
+const addDoctor = async (req, res) => {
   if (req.body) {
-    await ChannelingCenter(req.body)
+    await Doctor(req.body)
       .save()
       .then((data) => {
         res.status(200).send({ data: data });
@@ -16,9 +16,9 @@ const addChannelingCenter = async (req, res) => {
   }
 };
 
-//View All ChannelingCenters
-const getallChannelingCenters = async (req, res) => {
-  await ChannelingCenter.find()
+//View All Doctors
+const getallDoctors = async (req, res) => {
+  await Doctor.find()
     .then((data) => {
       res.status(200).send(data);
     })
@@ -27,10 +27,10 @@ const getallChannelingCenters = async (req, res) => {
     });
 };
 
-//View particular ChannelingCenter
-const getoneChannelingCenter = async (req, res) => {
-  let ChannelingCenterID = req.params.id;
-  await ChannelingCenter.findById(ChannelingCenterID)
+//View particular Doctor
+const getoneDoctor = async (req, res) => {
+  let DoctorID = req.params.id;
+  await Doctor.findById(DoctorID)
     .then((data) => {
       res.status(200).send(data);
     })
@@ -39,12 +39,12 @@ const getoneChannelingCenter = async (req, res) => {
     });
 };
 
-//Update ChannelingCenter
-const updateChannelingCenter = async (req, res) => {
+//Update Doctor
+const updateDoctor = async (req, res) => {
   console.log(req.body);
   if (req.body) {
     let id = req.params.id;
-    await ChannelingCenter.findByIdAndUpdate(id, req.body)
+    await Doctor.findByIdAndUpdate(id, req.body)
       .then((data) => {
         res.status(200).send(data);
       })
@@ -54,9 +54,9 @@ const updateChannelingCenter = async (req, res) => {
   }
 };
 
-//Delete ChannelingCenter
-const deleteChannelingCenter = async (req, res) => {
-  await ChannelingCenter.findByIdAndDelete(req.params.id)
+//Delete Doctor
+const deleteDoctor = async (req, res) => {
+  await Doctor.findByIdAndDelete(req.params.id)
     .then(() => {
       res.status(200).send({ status: "Deleted" });
     })
@@ -66,9 +66,9 @@ const deleteChannelingCenter = async (req, res) => {
 };
 
 module.exports = {
-  addChannelingCenter,
-  getallChannelingCenters,
-  getoneChannelingCenter,
-  updateChannelingCenter,
-  deleteChannelingCenter,
+  addDoctor,
+  getallDoctors,
+  getoneDoctor,
+  updateDoctor,
+  deleteDoctor,
 };

@@ -16,8 +16,8 @@ app.get("/", (req, res) => {
   res.json("Hello Node!");
 });
 
-const channelingCenterAPI = require("./src/api/ChannelingCenters.api");
-app.use("/channelingcenter", channelingCenterAPI());
+const doctorAPI = require("./src/api/Doctor.api");
+app.use("/doctor", doctorAPI());
 const medicineApi = require("./src/api/medicine.api");
 app.use("/medicine", medicineApi());
 

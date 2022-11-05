@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-const ChannelingCentersSchema = new Schema({
+const DoctorSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -27,10 +27,14 @@ const ChannelingCentersSchema = new Schema({
     type: String,
     required: true,
   },
+  channelingCenterName: {
+    type: String,
+    required: true,
+  },
   
 
 });
 
-const ChannelingCenter = mongoose.model("channeling_centers", ChannelingCentersSchema);
+const Doctor = mongoose.model("doctors", DoctorSchema);
 
-module.exports = ChannelingCenter;
+module.exports = Doctor;

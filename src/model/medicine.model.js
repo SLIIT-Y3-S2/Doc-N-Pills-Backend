@@ -7,6 +7,7 @@ const MedicineSchema = new mongoose.Schema({
   qty: { type: String, required: true },
   type: { type: String, required: true },
   dose : { type: String, required: true },
+  pharmacyName : { type: String, required: true },
 });
 
 const Medicine = mongoose.model("medicine", MedicineSchema);

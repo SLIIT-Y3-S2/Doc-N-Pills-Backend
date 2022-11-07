@@ -19,6 +19,7 @@ router.post("/register", async (req, res) => {
       password,
       passwordCheck,
     } = req.body;
+    console.log("sdf",req.body);
     const existingUser = await User.findOne({ email: email });
     // validate
     if (
@@ -76,6 +77,7 @@ router.post("/login", async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
     const user = await User.findOne({ email: email });
+    
     if (!user)
       return res
         .status(400)

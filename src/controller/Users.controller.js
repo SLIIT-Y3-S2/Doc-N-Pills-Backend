@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const auth = require("../auth/auth");
 const User = require("../model/Users.model");
+const Patient = require("../model/patient.model");
 
 // Register
 router.post("/register", async (req, res) => {
@@ -77,11 +78,33 @@ router.post("/login", async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
     const user = await User.findOne({ email: email });
-    
-    if (!user)
-      return res
+    if (!user){
+      const patient = await Patient.findOne({ email: email });
+      console.log("patient",patient);
+      if(!patient){
+        return res
         .status(400)
-        .json({ msg: "No account with this email has been registered." });
+        .json({ msg: "abcdddd No account with this email has been registered." });
+      }else{
+        const isMatch = await bcrypt.compare(password, patient.password);
+        if (!isMatch)
+          return res
+            .status(400)
+            .json({ msg: "Invalid credentials." });
+        const token = jwt.sign({ id: patient._id }, process.env.JWT_SECRET);
+        res.json({
+          token,
+          user: {
+            id: patient._id,
+            name: patient.name,
+            mobile: patient.mobile,
+            address: patient.address,
+            email: patient.email,
+            type: patient.type,
+          },
+        });
+      }      
+    }else{
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -99,7 +122,7 @@ router.post("/login", async (req, res) => {
         type: user.type,
       },
     });
-  } catch (err) {
+  } }catch (err) {
     res.status(500).json({ error: err.message });
   }
 });

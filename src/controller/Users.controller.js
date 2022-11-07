@@ -84,7 +84,7 @@ router.post("/login", async (req, res) => {
       if(!patient){
         return res
         .status(400)
-        .json({ msg: "abcdddd No account with this email has been registered." });
+        .json({ msg: "No account with this email has been registered." });
       }else{
         const isMatch = await bcrypt.compare(password, patient.password);
         if (!isMatch)

@@ -84,7 +84,7 @@ router.post("/login", async (req, res) => {
       if(!patient){
         return res
         .status(400)
-        .json({ msg: "abcdddd No account with this email has been registered." });
+        .json({ msg: "No account with this email has been registered." });
       }else{
         const isMatch = await bcrypt.compare(password, patient.password);
         if (!isMatch)
@@ -154,18 +154,25 @@ router.post("/tokenIsValid", async (req, res) => {
 
 //Get User
 router.get("/", auth, async (req, res) => {
-  const user = await User.findById(req.user);
-  res.json({
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    telephone: user.telephone,
-    location: user.location,
-    openHours: user.openHours,
-    legacyValidation: user.legacyValidation,
-    availabilityStatus: user.availabilityStatus,
-    type: user.type,
+  const user = await User.find()
+  .then((data) => {
+    res.status(200).send(data);
+  })
+  .catch((error) => {
+    res.send(error);
   });
+  //console.log("user",user);
+  // res.json({
+  //   id: user._id,
+  //   name: user.name,
+  //   email: user.email,
+  //   telephone: user.telephone,
+  //   location: user.location,
+  //   openHours: user.openHours,
+  //   legacyValidation: user.legacyValidation,
+  //   availabilityStatus: user.availabilityStatus,
+  //   type: user.type,
+  // });
 });
 
 module.exports = router;

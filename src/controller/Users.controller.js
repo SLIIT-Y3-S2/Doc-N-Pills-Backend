@@ -153,7 +153,7 @@ router.post("/tokenIsValid", async (req, res) => {
 });
 
 //Get User
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   const user = await User.find()
   .then((data) => {
     res.status(200).send(data);

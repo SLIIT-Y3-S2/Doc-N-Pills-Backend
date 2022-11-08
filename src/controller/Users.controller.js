@@ -175,4 +175,15 @@ router.get("/", async (req, res) => {
   // });
 });
 
+router.get("/:id", async (req, res) => {
+  let uid = req.params.id;
+  await User.findById(uid)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.send(error);
+    });
+});
+
 module.exports = router;

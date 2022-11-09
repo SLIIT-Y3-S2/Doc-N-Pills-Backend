@@ -35,6 +35,11 @@ const DoctorSchema = new Schema({
     type: String,
     required: true,
   },
+  channelingCenterId: {
+    type: String,
+    required: true,
+  },
+  
   
 
 });

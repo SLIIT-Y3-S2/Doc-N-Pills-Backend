@@ -14,7 +14,11 @@ const DoctorSchema = new Schema({
     type: String,
     required: true,
   },
-  availableTime: {
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
     type: String,
     required: true,
   },

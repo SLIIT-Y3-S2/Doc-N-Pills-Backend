@@ -62,7 +62,7 @@ const updatePatient = async (req, res) => {
 
 //get patient
 const getPatient = async (req, res) => {
-    const patient = await Patient.findById(req.params.id);
+    const patient = await Patient.findById(req.Patient);
     res.json({
         id: patient._id,
         name: patient.name,

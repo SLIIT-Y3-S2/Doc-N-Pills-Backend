@@ -21,15 +21,15 @@ const getAllMedicines = async (req, res) => {
 };
 
 const getoneMedicine = async (req, res) => {
-    let mid = req.params.id;
-    await Medicine.findById(mid)
-      .then((data) => {
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
-  }
+  let mid = req.params.id;
+  await Medicine.findById(mid)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
 
 const updateMedicine = async (req, res) => {
   console.log(req.body);

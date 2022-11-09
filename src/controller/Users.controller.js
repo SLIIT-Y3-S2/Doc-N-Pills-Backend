@@ -152,7 +152,7 @@ router.post("/tokenIsValid", async (req, res) => {
   }
 });
 
-//Get User
+//Get Users
 router.get("/", async (req, res) => {
   const user = await User.find()
   .then((data) => {
@@ -175,6 +175,7 @@ router.get("/", async (req, res) => {
   // });
 });
 
+//getone
 router.get("/:id", async (req, res) => {
   let uid = req.params.id;
   await User.findById(uid)
@@ -185,5 +186,19 @@ router.get("/:id", async (req, res) => {
       res.send(error);
     });
 });
+
+router.put("/:id", async (req, res) => {
+  console.log("req",req.body);
+  if(req.body){
+    let uid = req.params.id;
+    await User.findByIdAndUpdate(uid, req.body)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  }
+})
 
 module.exports = router;

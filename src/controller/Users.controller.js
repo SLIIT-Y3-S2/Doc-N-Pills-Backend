@@ -128,13 +128,14 @@ router.post("/login", async (req, res) => {
 });
 
 // Delete
-router.delete("/delete", auth, async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.user);
-    res.json(deletedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+router.delete("/delete/:id", async (req, res) => {
+  await User.findByIdAndDelete(req.params.id)
+  .then(() => {
+    res.status(200).send({status: "User deleted"});
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
 });
 
 // Check if token is valid

@@ -6,7 +6,7 @@ const PatientSchema = new mongoose.Schema({
     address: { type: String, required: true },
     email: { type: String, required: true },
     type:{type:String,default:"Patient"},
-    password: { type: String, required: true },
+    password: { type: String },
 });
 
 const Patient = mongoose.model("patient", PatientSchema);

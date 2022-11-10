@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const auth = require("../auth/auth");
 const User = require("../model/Users.model");
+const Patient = require("../model/patient.model");
 
 // Register
 router.post("/register", async (req, res) => {
@@ -19,6 +20,7 @@ router.post("/register", async (req, res) => {
       password,
       passwordCheck,
     } = req.body;
+    console.log("sdf",req.body);
     const existingUser = await User.findOne({ email: email });
     // validate
     if (
@@ -76,10 +78,33 @@ router.post("/login", async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
     const user = await User.findOne({ email: email });
-    if (!user)
-      return res
+    if (!user){
+      const patient = await Patient.findOne({ email: email });
+      console.log("patient",patient);
+      if(!patient){
+        return res
         .status(400)
         .json({ msg: "No account with this email has been registered." });
+      }else{
+        const isMatch = await bcrypt.compare(password, patient.password);
+        if (!isMatch)
+          return res
+            .status(400)
+            .json({ msg: "Invalid credentials." });
+        const token = jwt.sign({ id: patient._id }, process.env.JWT_SECRET);
+        res.json({
+          token,
+          user: {
+            id: patient._id,
+            name: patient.name,
+            mobile: patient.mobile,
+            address: patient.address,
+            email: patient.email,
+            type: patient.type,
+          },
+        });
+      }      
+    }else{
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -97,19 +122,20 @@ router.post("/login", async (req, res) => {
         type: user.type,
       },
     });
-  } catch (err) {
+  } }catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // Delete
-router.delete("/delete", auth, async (req, res) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.user);
-    res.json(deletedUser);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+router.delete("/delete/:id", async (req, res) => {
+  await User.findByIdAndDelete(req.params.id)
+  .then(() => {
+    res.status(200).send({status: "User deleted"});
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
 });
 
 // Check if token is valid
@@ -127,20 +153,53 @@ router.post("/tokenIsValid", async (req, res) => {
   }
 });
 
-//Get User
-router.get("/", auth, async (req, res) => {
-  const user = await User.findById(req.user);
-  res.json({
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    telephone: user.telephone,
-    location: user.location,
-    openHours: user.openHours,
-    legacyValidation: user.legacyValidation,
-    availabilityStatus: user.availabilityStatus,
-    type: user.type,
+//Get Users
+router.get("/", async (req, res) => {
+  const user = await User.find()
+  .then((data) => {
+    res.status(200).send(data);
+  })
+  .catch((error) => {
+    res.send(error);
   });
+  //console.log("user",user);
+  // res.json({
+  //   id: user._id,
+  //   name: user.name,
+  //   email: user.email,
+  //   telephone: user.telephone,
+  //   location: user.location,
+  //   openHours: user.openHours,
+  //   legacyValidation: user.legacyValidation,
+  //   availabilityStatus: user.availabilityStatus,
+  //   type: user.type,
+  // });
 });
+
+//getone
+router.get("/:id", async (req, res) => {
+  let uid = req.params.id;
+  await User.findById(uid)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((error) => {
+      res.send(error);
+    });
+});
+
+router.put("/:id", async (req, res) => {
+  console.log("req",req.body);
+  if(req.body){
+    let uid = req.params.id;
+    await User.findByIdAndUpdate(uid, req.body)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  }
+})
 
 module.exports = router;

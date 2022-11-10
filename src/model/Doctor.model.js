@@ -14,11 +14,10 @@ const DoctorSchema = new Schema({
     type: String,
     required: true,
   },
-  availableTime: {
+  arrivalTime: {
     type: String,
     required: true,
   },
- 
   channelingFee: {
     type: String,
     required: true,
@@ -31,6 +30,11 @@ const DoctorSchema = new Schema({
     type: String,
     required: true,
   },
+  channelingCenterId: {
+    type: String,
+    required: true,
+  },
+  
   
 
 });
